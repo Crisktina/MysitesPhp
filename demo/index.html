@@ -1,0 +1,45 @@
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <script src="./js/codigo.js"></script>
+  </head>
+  <body>
+    <p id="URL"></p>
+    <p id="LinksNum"></p>
+
+    <div id="Links"></div>
+    <br />
+    <br />
+    <form
+      action=""
+      method="post"
+      style="border: 1px solid blue; padding: 10px; width: 200px"
+    >
+      <label for="name">Nom:</label><br />
+      <input type="text" name="name" id="" /> <br /><br />
+      <label for="surname">Cognom:</label><br />
+      <input type="text" name="surname" id="" /><br /><br />
+      <label for="email">Email:</label><br />
+      <input type="email" name="email" id="" /><br /><br />
+      <input type="submit" value="Enviar" />
+    </form>
+    <a href="#" onclick="javascript:ordenaPerNom()">[Ordena Nom]</a>&nbsp;<a
+      href="#"
+      onclick="javascript:ordenaPerCategoria()"
+      >[Ordena per Categoria]</a
+    >&nbsp;<a href="#" onclick="javascript:ordenaPerPreu()"
+      >[Ordena per preu]</a
+    >
+    <p>
+      <a href="#" onclick="javascript:filtraPer('')">[Tots]</a
+      ><a href="#" onclick="javascript:filtraPer('peixos')"
+        >[Filtra per Peixos]</a
+      >&nbsp;<a href="#" onclick="javascript:filtraPer('carns')"
+        >[Filtra per carns]</a
+      >&nbsp;<a href="#" onclick="javascript:filtraPer('fruites')"
+        >[Filtra per fruites]</a
+      >
+    </p>
+    <table id="tauladeProductes" border="1"></table>
+  </body>
+</html>
