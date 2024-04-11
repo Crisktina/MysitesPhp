@@ -97,7 +97,7 @@ function escriureTaula(productes) {
   //console.log(products);
   let theTable = "";
   let product = null;
-  productes.forEach((product) => {
+  productes.forEach((product, i) => {
     theTable +=
       "<tr><td>" +
       product.name +
@@ -106,7 +106,9 @@ function escriureTaula(productes) {
       "</td><td>" +
       product.price +
       "</td><td>" +
-      "(X)" +
+      '<a onclick="deleteProducts(' +
+      i +
+      ')" href="#">(X)</a>' +
       "</td><td>" +
       "Editar" +
       "</td></tr>";
@@ -136,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Cuantos Links Hay
   let linkTag = document.getElementsByTagName("a");
-  console.log(linkTag);
+  //console.log(linkTag);
   document.getElementById("LinksNum").innerHTML =
     "Total de links en la página: " + linkTag.length;
 
@@ -154,13 +156,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Cuantos formularios hay
   let formTag = document.getElementsByTagName("input");
-  console.log(formTag);
+  //console.log(formTag);
   document.getElementById("formNum").innerHTML =
     "Total de inputs en la página: " + formTag.length;
 
   // Cuantas imagenes hay
   let imgTag = document.getElementsByTagName("img");
-  console.log(imgTag);
+  //console.log(imgTag);
   document.getElementById("imgNum").innerHTML =
     "Total de imágenes en la página: " + imgTag.length;
 });
@@ -177,11 +179,33 @@ function getNewProducts() {
       console.error("Error al devolver la lista de produtos", err)
     );
 }
+//almacenar data al iniciar página
+let newArray = JSON.stringify(productes);
+localStorage.setItem("testJSON", newArray);
+
+//introducir productos en localstorage
+function insertDataLocalstorage(array) {
+  //almacenar data
+  let newArray = JSON.stringify(array);
+  localStorage.setItem("testJSON", newArray);
+}
+
+//obtener datos en localstorage
+function getDataLocalstorage() {
+  let text = localStorage.getItem("testJSON");
+  let obj = JSON.parse(text);
+  return obj;
+}
 
 //Eliminar productos
 
-function deleteProducts() {}
-
-//Editar productos
+function deleteProducts(numIndex) {
+  let array = getDataLocalstorage();
+  array.splice(numIndex, 1);
+  insertDataLocalstorage(array);
+  escriureTaula(getDataLocalstorage());
+}
 
 // Añadir productos
+
+//Editar productos
