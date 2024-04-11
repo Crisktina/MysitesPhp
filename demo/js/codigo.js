@@ -105,6 +105,10 @@ function escriureTaula(productes) {
       product.category +
       "</td><td>" +
       product.price +
+      "</td><td>" +
+      "(X)" +
+      "</td><td>" +
+      "Editar" +
       "</td></tr>";
   });
 
@@ -122,6 +126,8 @@ function escriureTaula(productes) {
                   document.getElementById("tauladeProductes").innerHTML=theTable;
               }
   */
+
+//recargar pagina
 document.addEventListener("DOMContentLoaded", function () {
   let productes = getProducts();
   escriureTaula(productes);
@@ -138,7 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let div = document.getElementById("Links");
     div.innerHTML +=
       "<p>" +
-      i +
+      (i + 1) +
+      ". " +
       linkTag[i].getAttribute("href") +
       " => " +
       linkTag[i].outerText +
@@ -146,10 +153,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Cuantos formularios hay
+  let formTag = document.getElementsByTagName("input");
+  console.log(formTag);
+  document.getElementById("formNum").innerHTML =
+    "Total de inputs en la página: " + formTag.length;
+
+  // Cuantas imagenes hay
+  let imgTag = document.getElementsByTagName("img");
+  console.log(imgTag);
+  document.getElementById("imgNum").innerHTML =
+    "Total de imágenes en la página: " + imgTag.length;
 });
 
-//Editar productos
+// Hacer el fetch de llistatProductes
+function getNewProducts() {
+  fetch("./php/llistatProductes-data.php")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      escriureTaula(data);
+    })
+    .catch((err) =>
+      console.error("Error al devolver la lista de produtos", err)
+    );
+}
 
 //Eliminar productos
+
+function deleteProducts() {}
+
+//Editar productos
 
 // Añadir productos

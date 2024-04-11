@@ -4,25 +4,54 @@
     <script src="./js/codigo.js"></script>
   </head>
   <body>
+    <img
+      width="200px"
+      src="//www.sarti.webs.upc.edu/moodle/pluginfile.php/1/theme_klass/logo/1515671862/Logo%20Sarti%20blanc2.svg"
+      alt="Formació Sarti"
+    />
+    <img
+      width="200px"
+      src="https://www.sarti.webs.upc.edu/web_v2/assets/onepage/img/logo/upc.png"
+      alt="Formació Sarti"
+    />
+
     <p id="URL"></p>
+
     <p id="LinksNum"></p>
 
     <div id="Links"></div>
+
+    <p id="formNum"></p>
+    <p id="imgNum"></p>
+
     <br />
     <br />
+
     <form
-      action=""
-      method="post"
-      style="border: 1px solid blue; padding: 10px; width: 200px"
+      id="altaProducte"
+      method="POST"
+      action="afegeixProducte.php"
+      style="border: 1px solid black; padding: 10px"
     >
-      <label for="name">Nom:</label><br />
-      <input type="text" name="name" id="" /> <br /><br />
-      <label for="surname">Cognom:</label><br />
-      <input type="text" name="surname" id="" /><br /><br />
-      <label for="email">Email:</label><br />
-      <input type="email" name="email" id="" /><br /><br />
-      <input type="submit" value="Enviar" />
+      <p>AÑADIR PRODUCTOS:</p>
+      <input type="hidden" name="id" value="-1" />
+      <input type="hidden" name="operation" value="add" />
+      <!--input type="hidden" name="operacio" value="update"-->
+
+      <p>Nom: <input type="text" name="name" value="MANDARINES" /></p>
+      <p>
+        Categoria:
+        <select name="category">
+          <option value="peix">Peix</option>
+          <option value="carn">Carn</option>
+          <option value="fruita">Fruita</option>
+        </select>
+      </p>
+
+      <p>Preu: <input type="number" name="price" /></p>
+      <p><input type="submit" name="enviar" value="enviar" /></p>
     </form>
+
     <a href="#" onclick="javascript:ordenaPerNom()">[Ordena Nom]</a>&nbsp;<a
       href="#"
       onclick="javascript:ordenaPerCategoria()"
@@ -40,6 +69,16 @@
         >[Filtra per fruites]</a
       >
     </p>
+    <br />
+    <button onclick="getNewProducts()">Lista de nuevos productos</button>
+
+    <a href="./php/llistatProductes.php"
+      >Lista de nuevos productos-NOVA-PÀGINA</a
+    >
+
+    <br />
+    <br />
+
     <table id="tauladeProductes" border="1"></table>
   </body>
 </html>
