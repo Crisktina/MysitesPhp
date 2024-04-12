@@ -58,10 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["comentarios"])) {
         $comentarios = $_POST["comentarios"];
     }
-
 }
-
-  
 
 function test_input($data) {
   $data = trim($data);
@@ -69,8 +66,6 @@ function test_input($data) {
   $data = htmlspecialchars($data);
   return $data;
 }
-
-
 
 ?>
 
@@ -104,7 +99,6 @@ echo "<br>";
 echo $email;
 echo "<br>";
 echo $comentarios;
-
 ?>
 
 
