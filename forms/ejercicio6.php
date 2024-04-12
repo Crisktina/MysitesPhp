@@ -13,6 +13,7 @@
 // - Se guardaran en un array
 // - Tendremos que devolver el sumatorio Y el valor máximo y mínimo.
 // - Si teníamos una función previa que hacia esto deberemos utilizarla
+$suma = ""; $res = ""; $resMax = ""; $resMin = "";
 
 if (isset($_POST["calcular"]) && isset($_POST["num1"]) && isset($_POST["num2"]) && isset($_POST["num3"]) && isset($_POST["num4"]) && isset($_POST["num5"]) && isset($_POST["num6"]) && isset($_POST["num7"]) && isset($_POST["num8"]) && isset($_POST["num9"]) && isset($_POST["num10"])) {
 

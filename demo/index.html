@@ -15,7 +15,6 @@
       alt="Formació Sarti"
     />
 
-    <!--
     <p id="URL"></p>
 
     <p id="LinksNum"></p>
@@ -24,7 +23,6 @@
 
     <p id="formNum"></p>
     <p id="imgNum"></p>
-   -->
 
     <br />
     <br />
@@ -32,7 +30,6 @@
     <form
       id="altaProducte"
       method="POST"
-      action="afegeixProducte.php"
       style="border: 1px solid black; padding: 10px"
     >
       <p>AÑADIR PRODUCTOS:</p>
@@ -40,7 +37,7 @@
       <input type="hidden" name="operation" value="add" />
       <!--input type="hidden" name="operacio" value="update"-->
 
-      <p>Nom: <input type="text" name="name" value="MANDARINES" /></p>
+      <p>Nom: <input id="nom" type="text" name="name" value="MANDARINES" /></p>
       <p>
         Categoria:
         <select name="category">

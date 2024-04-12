@@ -165,6 +165,14 @@ document.addEventListener("DOMContentLoaded", function () {
   //console.log(imgTag);
   document.getElementById("imgNum").innerHTML =
     "Total de imágenes en la página: " + imgTag.length;
+
+  const formNewProduct = document.getElementById("altaProducte");
+  formNewProduct.addEventListener("submit", (event) => {
+    event.preventDefault(); // Evita que el formulario se envíe automáticamente
+    console.log(event);
+    //const nom = document.getElementById("nom").value;
+    //console.log(`Id: ${nom}`);
+  });
 });
 
 // Hacer el fetch de llistatProductes
