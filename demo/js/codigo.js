@@ -217,3 +217,50 @@ function deleteProducts(numIndex) {
 // Añadir productos
 
 //Editar productos
+
+//Añadir subcategorias al form
+const carn = [
+  { subcategoria: "1carn" },
+  { subcategoria: "2carn" },
+  { subcategoria: "3carn" },
+];
+
+const peix = [
+  { subcategoria: "1peix" },
+  { subcategoria: "2peix" },
+  { subcategoria: "3peix" },
+];
+
+const fruita = [
+  { subcategoria: "1fruita" },
+  { subcategoria: "2fruita" },
+  { subcategoria: "3fruita" },
+];
+
+function cambioCategoria(valor) {
+  let categoria = valor.value;
+  if (categoria == categoria) {
+    crearOption(categoria);
+  }
+}
+
+function crearOption(categoria) {
+  subcategory.innerHTML = "";
+
+  if (categoria == "carn") {
+    carn.forEach((element) => {
+      let selectChild = document.createElement("option");
+      subcategory.appendChild(selectChild).textContent = element.subcategoria;
+    });
+  } else if (categoria == "peix") {
+    peix.forEach((element) => {
+      let selectChild = document.createElement("option");
+      subcategory.appendChild(selectChild).textContent = element.subcategoria;
+    });
+  } else if (categoria == "fruita") {
+    fruita.forEach((element) => {
+      let selectChild = document.createElement("option");
+      subcategory.appendChild(selectChild).textContent = element.subcategoria;
+    });
+  }
+}

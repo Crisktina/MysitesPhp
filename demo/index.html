@@ -15,14 +15,7 @@
       alt="Formació Sarti"
     />
 
-    <p id="URL"></p>
 
-    <p id="LinksNum"></p>
-
-    <div id="Links"></div>
-
-    <p id="formNum"></p>
-    <p id="imgNum"></p>
 
     <br />
     <br />
@@ -40,11 +33,17 @@
       <p>Nom: <input id="nom" type="text" name="name" value="MANDARINES" /></p>
       <p>
         Categoria:
-        <select name="category">
+        <select name="category" onchange="javascript:cambioCategoria(this)">
           <option value="peix">Peix</option>
           <option value="carn">Carn</option>
           <option value="fruita">Fruita</option>
         </select>
+        <p>
+          Subcategoria:   
+          <select name="subcategory" id="subcategory">
+              <option value="0">Elije una opción</option>
+          </select>
+        </p>
       </p>
 
       <p>Preu: <input type="number" name="price" /></p>
@@ -79,5 +78,14 @@
     <br />
 
     <table id="tauladeProductes" border="1"></table>
+
+    <p id="URL"></p>
+
+    <p id="LinksNum"></p>
+
+    <div id="Links"></div>
+
+    <p id="formNum"></p>
+    <p id="imgNum"></p>
   </body>
 </html>
