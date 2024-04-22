@@ -1,0 +1,147 @@
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Validación Formularios</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form id="formulario">
+        <div class="titulo">Formulario</div>
+
+        <!-- Entrada para nombre de Usuario -->
+
+        <div>
+          <label for="nombreDeUsuario">Nombre de Usuario</label>
+          <i class="fas fa-user"></i>
+
+          <input
+            type="text"
+            name="username"
+            id="nombreDeUsuario"
+            class="textInput"
+            placeholder="Introducir nombre"
+          />
+
+          <i class="fas fa-exclamation-circle failure-icon"></i>
+          <i class="far fa-check-circle success-icon"></i>
+
+          <div class="error" id="errorNombre"></div>
+        </div>
+        <!-- Entrada de Correo Electrónico -->
+
+        <div>
+          <label for="correoElectronico">Correo Electrónico</label>
+          <i class="far fa-envelope"></i>
+
+          <input
+            type="text"
+            name="email"
+            id="correoElectronico"
+            class="textInput"
+            placeholder="abc@gmail.com"
+          />
+
+          <i class="fas fa-exclamation-circle failure-icon"></i>
+          <i class="far fa-check-circle success-icon"></i>
+
+          <div class="error" id="correoError"></div>
+        </div>
+
+        <!--   Entrada de contraseña -->
+        <div>
+          <label for="contrasena">Contraseña</label>
+          <i class="fas fa-lock"></i>
+
+          <input
+            type="password"
+            name="password"
+            id="contrasena"
+            class="textInput"
+            placeholder="Introducir contraseña"
+          />
+          <i class="fas fa-exclamation-circle failure-icon"></i>
+          <i class="far fa-check-circle success-icon"></i>
+
+          <div class="error" id="contrasenaError"></div>
+        </div>
+        <!--   Validar repetir contraseña -->
+
+        <div>
+          <label for="contrasenaValidar">Repetir Contraseña</label>
+          <i class="fas fa-lock"></i>
+
+          <input
+            type="password"
+            name="passwordValidar"
+            id="contrasenaValidar"
+            class="textInput"
+            placeholder="Repetir contraseña"
+          />
+
+          <i class="fas fa-exclamation-circle failure-icon"></i>
+          <i class="far fa-check-circle success-icon"></i>
+
+          <div class="error" id="contrasenaValidarError"></div>
+        </div>
+        <!--   Comarcas -->
+        <div>
+          <label for="comarca">Comarques</label>
+          <select name="comarca">
+            <option value="peix">Baix Llobregat</option>
+            <option value="carn">Garraf</option>
+            <option value="fruita">Maresme</option>
+          </select>
+        </div>
+        <br />
+        <!--   Poblaciones -->
+        <div>
+          <label for="poblacio">Poblacions</label>
+          <select name="poblacio">
+            <option value="peix">Sitges</option>
+            <option value="carn">Vilanova i la Geltrú</option>
+          </select>
+        </div>
+        <br />
+        <!--   Preferencias -->
+        <label for="pref">Preferències (min 3):</label>
+        <p>
+          <input type="checkbox" name="pref" /> Salut&nbsp;<input
+            type="checkbox"
+            name="pref"
+          />
+          Cinema&nbsp; <input type="checkbox" name="pref" /> Esport
+        </p>
+        <p>
+          <input type="checkbox" name="pref" /> Literatura&nbsp;<input
+            type="checkbox"
+            name="pref"
+          />
+          Viatges&nbsp; <input type="checkbox" name="pref" /> Foto
+        </p>
+        <p>
+          <input type="checkbox" name="pref" /> Mòbils&nbsp;<input
+            type="checkbox"
+            name="pref"
+          />
+          Idiomes&nbsp; <input type="checkbox" name="pref" /> Jocs
+        </p>
+        <br /><br />
+        <!--   Politica de privacidad -->
+        <p>
+          <input type="checkbox" name="politiques" />
+          Aceptar la política de privacidad
+        </p>
+        <br />
+        <!--   submit button -->
+        <button id="btn" type="submit">Enviar</button>
+      </form>
+    </div>
+
+    <script src="./js/functions.js"></script>
+  </body>
+</html>

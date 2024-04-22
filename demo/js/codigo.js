@@ -166,13 +166,14 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("imgNum").innerHTML =
     "Total de imágenes en la página: " + imgTag.length;
 
-  const formNewProduct = document.getElementById("altaProducte");
-  formNewProduct.addEventListener("submit", (event) => {
-    event.preventDefault(); // Evita que el formulario se envíe automáticamente
-    console.log(event);
-    //const nom = document.getElementById("nom").value;
-    //console.log(`Id: ${nom}`);
-  });
+  // const formNewProduct = document.getElementById("altaProducte");
+  // formNewProduct.addEventListener("submit", (event) => {
+  //   event.preventDefault(); // Evita que el formulario se envíe automáticamente
+  //   console.log(event);
+
+  //   const nom = document.getElementById("nom").value;
+  //   console.log(`Id: ${nom}`);
+  // });
 });
 
 // Hacer el fetch de llistatProductes
@@ -216,6 +217,10 @@ function deleteProducts(numIndex) {
 
 // Añadir productos
 
+function addProduct(form) {
+  console.log(form);
+}
+
 //Editar productos
 
 //Añadir subcategorias al form
@@ -239,9 +244,7 @@ const fruita = [
 
 function cambioCategoria(valor) {
   let categoria = valor.value;
-  if (categoria == categoria) {
-    crearOption(categoria);
-  }
+  crearOption(categoria);
 }
 
 function crearOption(categoria) {

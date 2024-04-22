@@ -1,7 +1,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <script src="./js/codigo.js"></script>
+    
   </head>
   <body>
     <img
@@ -22,15 +22,18 @@
 
     <form
       id="altaProducte"
+      action="./php/subirArchivo.php"
       method="POST"
       style="border: 1px solid black; padding: 10px"
+      enctype="multipart/form-data"
+      
     >
       <p>AÑADIR PRODUCTOS:</p>
-      <input type="hidden" name="id" value="-1" />
+     <!--input type="hidden" name="id" value="-1" />
       <input type="hidden" name="operation" value="add" />
-      <!--input type="hidden" name="operacio" value="update"-->
+      <input type="hidden" name="operacio" value="update"-->
 
-      <p>Nom: <input id="nom" type="text" name="name" value="MANDARINES" /></p>
+      <p>Nom: <input id="name" type="text" name="name" value="MANDARINES" /></p>
       <p>
         Categoria:
         <select name="category" onchange="javascript:cambioCategoria(this)">
@@ -41,13 +44,16 @@
         <p>
           Subcategoria:   
           <select name="subcategory" id="subcategory">
-              <option value="0">Elije una opción</option>
+              <option value="0">Elije una categoria</option>
           </select>
         </p>
       </p>
 
       <p>Preu: <input type="number" name="price" /></p>
-      <p><input type="submit" name="enviar" value="enviar" /></p>
+      <input type="hidden" name="MAX_FILE_SIZE" value="204800">
+      <input type="file" name="fileIMG" id="subirImagen" >
+      <br><br>
+      <input type="submit" name="enviar" value="enviar"  />
     </form>
 
     <a href="#" onclick="javascript:ordenaPerNom()">[Ordena Nom]</a>&nbsp;<a
@@ -87,5 +93,7 @@
 
     <p id="formNum"></p>
     <p id="imgNum"></p>
+
+    <script src="./js/codigo.js"></script>
   </body>
 </html>
