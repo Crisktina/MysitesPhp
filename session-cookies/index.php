@@ -54,28 +54,31 @@ if (!isset($_GET['carpeta'])) {
           <?php
             if (is_dir($carpeta)){
               if ($dh = opendir($carpeta)){
+                //var_dump(readdir($dh));
+                
                 while (($file = readdir($dh)) !== false){
                   if (!($file=="." || $file=="..")){
-                    echo '1';
-                   // header('Location:index.php?album='.$file);
+                  // echo count((array)$file);
+               
+                   //var_dump(readdir($dh));
+                   
+                   //header('Location:index.php?album='.$file);
                     //mostrar primer album
-                    if(is_dir($file)){
-                      echo '2';
-                      
-                    }
+                   
                     //elegir album, poner un menu para elegir a través del boton de cambiar carpeta
                      if(isset($_GET['album']) && $_GET['album']==$file){
-                      echo "<h1 class=\"fw-light\">$file</h1>";
+                     echo "<h1 class=\"fw-light\">$file</h1>";
                      }
 
                     
                   }
+                }
 
                  
-                }
-                closedir($dh);
               }
-
+                closedir($dh);
+              
+            
               ?>
             
             <p>
