@@ -82,7 +82,7 @@ session_start();
                       <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
                       <p class="card-text mb-auto">Autor: <cite title="Source Title">Pablo</cite></p>
                       <button type="button" class="btn mr-md-2 mb-md-0 mb-2 btn-outline-danger">
-                        <i class="ion-ios-heart mr-1"></i> 2 Poner corazon!!!!!""
+                        <i class="ion-ios-heart mr-1"></i> 2 Poner corazon!!!!!https://preview.colorlib.com/theme/bb/bootstrap-buttons-12/
                       </button>
                     </div>
                     <div class="col-auto d-none d-lg-block">
