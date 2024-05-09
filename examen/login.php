@@ -43,6 +43,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
         //almacenar ID de usuario en la session (se deberia hacer mediante token)
         $_SESSION['user_id'] = 1;
         $_SESSION['username'] = $user;
+        $_SESSION['password'] = $passwordCodificado;
         header('Location:index.php');
 
     } else {
@@ -59,16 +60,7 @@ function test_input($data) {
 }
 ?>
 <body> 
-    <header>
-      <div class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container">
-          <a href="#" class="navbar-brand d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <strong>Logo</strong>
-          </a>
-        </div>
-      </div>
-    </header>
+    <?php require "./modulos/headerLogin.php"; ?>
     <div class="d-flex align-items-center py-5 bg-body-tertiary">
         <main class="form-signin w-50 m-auto">
             <form method="POST" action="login.php" class="row g-2 needs-validation" >
@@ -120,11 +112,7 @@ function test_input($data) {
         </main>
     </div>
    
-    <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-            <p class="col-md-4 mb-0 text-body-secondary">&copy; 2024 Company, Inc</p>
-        </footer>
-    </div>
+    <?php require "./modulos/footer.php"; ?>
     
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

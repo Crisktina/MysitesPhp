@@ -37,7 +37,7 @@ session_start();
       </div>
     </header>
     <main class="container mt-5">
-        <form method="POST" action="login.php" class="my-5 row g-2">
+        <form method="POST" class="my-5 row g-2">
             <h1 class="h3 mb-4 fw-normal">Añadir post:</h1>
             <div class="form-floating">
                 <input type="text" class="form-control" id="floatingInput" name="titulo" placeholder="titulo">
@@ -55,35 +55,52 @@ session_start();
         </form>
         <div class="row mb-2">
             <div class="col-md-6">
-                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="card row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
-                    <h3 class="mb-0">Featured post</h3>
-                    <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                      <h3 class="mb-0">Featured post</h3>
+                      <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                      <p class="card-text mb-auto">Autor: <cite title="Source Title">Cristina</cite></p>
+
                     </div>
                     <div class="col-auto d-none d-lg-block">
-                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                      <img src="./img/img1.jpg" alt="imagen paisaje" class="bd-placeholder-img" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                      <p class="mb-2 fw-semibold">Comentarios:</p>
+                      <blockquote class="blockquote mb-0">
+                        <p class="fs-6">A well-known quote, contained in a blockquote element.</p>
+                        <footer class="blockquote-footer fs-6 fst-italic">Autor</footer>
+                      </blockquote>
                     </div>
                 </div>
+                
             </div>
             <div class="col-md-6">
-                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="card row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
-                    <h3 class="mb-0">Post title</h3>
-                    <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                      <h3 class="mb-0">Post title</h3>
+                      <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                      <p class="card-text mb-auto">Autor: <cite title="Source Title">Pablo</cite></p>
+                      <button type="button" class="btn mr-md-2 mb-md-0 mb-2 btn-outline-danger">
+                        <i class="ion-ios-heart mr-1"></i> 2 Poner corazon!!!!!""
+                      </button>
                     </div>
                     <div class="col-auto d-none d-lg-block">
-                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                      <img src="./img/img2.jpg" alt="imagen paisaje" class="bd-placeholder-img" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                      <p class="mb-2 fw-semibold">Comentarios:</p>
+                      <blockquote class="blockquote mb-0">
+                        <p class="fs-6">A well-known quote, contained in a blockquote element.</p>
+                        <footer class="blockquote-footer fs-6 fst-italic">Autor</footer>
+                      </blockquote>
                     </div>
                 </div>
             </div>
         </div>
     </main>
    
-    <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-            <p class="col-md-4 mb-0 text-body-secondary">&copy; 2024 Company, Inc</p>
-        </footer>
-    </div>
+    <?php require "./modulos/footer.php"; ?>
     
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
