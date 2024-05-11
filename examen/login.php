@@ -10,48 +10,83 @@
 <?php 
 header('Content-Type: text/html; charset=UTF-8'); 
 
+$passwordErr = $passwordClassErr = $userErr = $userClassErr = $rememberErr = $rememberClassErr = "";
+$user = $password = $passwordCodificado = "";
+
 if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
-    $user = test_input($_POST["user"]);
-    $password = test_input($_POST["password"]);
-    $passwordCodificado = sha1(md5($password));
+
+    //Validar inputs
+    if (empty($_POST["user"])) {
+        $userErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+        $userClassErr = "is-invalid";
+    } else {
+        $user = test_input($_POST["user"]);
+        // credenciales no correctas
+        if($user !== "Cris") {
+            $userErr = "<div class=\"invalid-feedback\">El usuario/a no existe.</div>";
+            $userClassErr = "is-invalid";
+        }
+    }
+
+    if (empty($_POST["password"])) {
+        $passwordErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+        $passwordClassErr = "is-invalid";
+    } else {
+        $password = test_input($_POST["password"]);
+        $passwordCodificado = sha1(md5($password));
+        // credenciales no correctas
+        if($passwordCodificado !== "63982e54a7aeb0d89910475ba6dbd3ca6dd4e5a1") {
+            $passwordErr = "<div class=\"invalid-feedback\">La contraseña no existe.</div>";
+            $passwordClassErr = "is-invalid";
+        }
+    }
+    if (!isset($_POST['remember'])) {
+        $rememberErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+        $rememberClassErr = "is-invalid";
+    } else {
+            //cookies
+            session_start([
+                'use_only_cookies' => 1,
+                'cookie_lifetime' => 0, // '0' = expire when browser closes
+                'cookie_secure' => 1,
+                'cookie_httponly' => 1
+            ]);
     
-    // password = 1234 user= Cris
+            if(isset($_POST['remember'])) {
+                    $name = 'remember_me';
+                    $value = 1; //podria ser el token o el id del usuario
+                    $expire = time() + 60*60*24*3; // 3 dias
+                    $path = '/';
+                    $domain = '';
+                    $secure = true;
+                    $httponly = true;
+                
+                    setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+            }
+    }
+
+    // password = 1234 user= Cris 
+    // Validar credenciales:
     if($user == "Cris" && $passwordCodificado == "63982e54a7aeb0d89910475ba6dbd3ca6dd4e5a1" && isset($_POST['remember'])){
 
-        session_start([
-            'use_only_cookies' => 1,
-            'cookie_lifetime' => 0, // '0' = expire when browser closes
-            'cookie_secure' => 1,
-            'cookie_httponly' => 1
-        ]);
-
-        if(isset($_POST['remember'])) {
-            $name = 'remember_me';
-            $value = 1; //podria ser el token o el id del usuario
-            $expire = time() + 60*60*24*3; // 3 dias
-            $path = '/';
-            $domain = '';
-            $secure = true;
-            $httponly = true;
-          
-            setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
-        }
-          
-        //regenera el token de la session perpetua por defecto
+        // regenera el token de la session perpetua por defecto
         session_regenerate_id();
-        
-        //almacenar ID de usuario en la session (se deberia hacer mediante token)
-        $_SESSION['user_id'] = 1;
+            
+        // almacenar usuario en la session (se deberia hacer mediante token)
+        $_SESSION['login'] = 1;
         $_SESSION['username'] = $user;
         $_SESSION['password'] = $passwordCodificado;
+
+        // entrar en la parte privada
         header('Location:index.php');
 
-    } else {
-        // credenciales no correctas
-      header('Location:login.php?err=1');
     }
+    
 } 
 
+// Strip unnecessary characters (extra space, tab, newline) from the user input data (with the PHP trim() function)
+// Remove backslashes \ from the user input data (with the PHP stripslashes() function)
+// The htmlspecialchars() function converts special characters into HTML entities. This means that it will replace HTML characters like < and > with &lt; and &gt;. This prevents attackers from exploiting the code by injecting HTML or Javascript code (Cross-site Scripting attacks) in forms.
 function test_input($data) {
   $data = trim($data);
   $data = stripslashes($data);
@@ -60,50 +95,26 @@ function test_input($data) {
 }
 ?>
 <body> 
-    <?php require "./modulos/headerLogin.php"; ?>
+    <?php include_once ("./modulos/headerLogin.php"); ?>
     <div class="d-flex align-items-center py-5 bg-body-tertiary">
         <main class="form-signin w-50 m-auto">
             <form method="POST" action="login.php" class="row g-2 needs-validation" >
-                
                 <h1 class="h3 mb-3 fw-normal">Sign In:</h1>
-
                 <div class="form-floating">
-                    <input type="text" class="form-control <?php 
-                    if(isset($_GET['err']) && $_GET['err']==1){
-                        echo "is-invalid";
-                    }
-                    ?>" id="floatingInput" name="user" placeholder="nombre" value="Cris">
+                    <input type="text" class="form-control <?=$userClassErr?>" id="floatingInput" name="user" placeholder="nombre" value="Cris">
                     <label for="floatingInput">Usuario</label>
-                    <?php 
-                    if(isset($_GET['err']) && $_GET['err']==1){
-                        echo "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
-                    }
-                    ?>
+                    <?= $userErr?>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control <?php 
-                    if(isset($_GET['err']) && $_GET['err']==1){
-                        echo "is-invalid";
-                    }?>" id="floatingPassword" name="password" placeholder="Password" value="1234">
+                    <input type="password" class="form-control <?=$passwordClassErr?>" id="floatingPassword" name="password" placeholder="Password" value="1234">
                     <label for="floatingPassword">Contraseña</label>
-                    <?php 
-                    if(isset($_GET['err']) && $_GET['err']==1){
-                        echo "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
-                    }
-                    ?>
+                    <?= $passwordErr?>
                 </div>
 
                 <div class="form-check text-start my-3">
-                    <input class="form-check-input <?php 
-                    if(isset($_GET['err']) && $_GET['err']==1){
-                        echo "is-invalid";
-                    }?>" type="checkbox" value="remember" name="remember" id="flexCheckDefault">
+                    <input class="form-check-input <?=$rememberClassErr?>" type="checkbox" value="remember" name="remember" id="flexCheckDefault">
                     <label class="form-check-label" for="flexCheckDefault">Recordar</label>
-                    <?php 
-                    if(isset($_GET['err']) && $_GET['err']==1){
-                        echo "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
-                    }
-                    ?>
+                    <?= $rememberErr?>
                 </div>
                 <button class="btn btn-primary w-100 py-2" type="submit" name="send">Sign In</button>
                 <a class="btn btn-danger w-100 py-2 my-3" href="signUp.php" >Sign Up</a>
@@ -112,7 +123,7 @@ function test_input($data) {
         </main>
     </div>
    
-    <?php require "./modulos/footer.php"; ?>
+    <?php include_once ("./modulos/footer.php"); ?>
     
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

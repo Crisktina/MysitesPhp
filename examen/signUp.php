@@ -8,114 +8,150 @@
     <title>Sign Up</title>
 </head>
 <?php 
-header('Content-Type: text/html; charset=UTF-8'); 
+    header('Content-Type: text/html; charset=UTF-8'); 
 
-if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
-    // comprovaciones
+    $passwordErr = $password2Err = $passwordClassErr = $userErr = $userClassErr = $surnameErr = $surnameClassErr = $emailErr = $emailClassErr = $dateErr = $dateClassErr = "";
+    $user = $password = $password2 = $passwordCodificado = $email = $date = $surname = "";
 
-    $user = test_input($_POST["user"]);
-    $surname = test_input($_POST["surname"]);
-    $email = validateEMAIL($_POST["email"]);
-    $date = validateFecha($_POST["date"]);
-    $password = test_input($_POST["password"]);
-    $password2 = validatePassword2($_POST["password"],$_POST["password2"] );
-    $passwordCodificado = sha1(md5($password));
-    
-    // password = 1234 user= Cris
-    if($user == "Cris" && $passwordCodificado == "63982e54a7aeb0d89910475ba6dbd3ca6dd4e5a1" ){
-
-        session_start([
-            'use_only_cookies' => 1,
-            'cookie_lifetime' => 0, // '0' = expire when browser closes
-            'cookie_secure' => 1,
-            'cookie_httponly' => 1
-        ]);
-
-        if(isset($_POST['send'])) {
-            $name = 'signUp';
-            $value = 1; //podria ser el token o el id del usuario
-            $expire = time() + 60*60*24*3; // 3 dias
-            $path = '/';
-            $domain = '';
-            $secure = true;
-            $httponly = true;
-          
-            setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
-        }
-          
-        //regenera el token de la session perpetua por defecto
-        session_regenerate_id();
-        
-        //almacenar ID de usuario en la session (se deberia hacer mediante token)
-        $_SESSION['user_id'] = 1;
-        $_SESSION['user'] = $user;
-        $_SESSION['surname'] = $surname;
-        $_SESSION['date'] = $date;
-        $_SESSION['email'] = $email;
-        $_SESSION['password'] = $passwordCodificado;
-        header('Location:index.php');
-
-    } else {
-        // credenciales no correctas
-      header('Location:login.php?err=1');
-    }
-
+    //otras validaciones
     require "./php/comprovaciones.php";
-} ?>
+    
+    if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
+        $ok = 0;
+
+        //Validar inputs
+        if (empty($_POST["user"])) {
+            $userErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+            $userClassErr = "is-invalid";
+        } else {
+            $user = test_input($_POST["user"]);
+            $ok++;
+        }
+
+        if (empty($_POST["surname"])) {
+            $surnameErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+            $surnameClassErr = "is-invalid";
+        } else {
+            $surname = test_input($_POST["surname"]);
+            $ok++;
+        }
+
+        if (empty($_POST["date"])) {
+            $dateErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+            $dateClassErr = "is-invalid";
+        } else {
+            $date_obj = DateTime::createFromFormat('d/m/Y', $_POST["date"]);
+            if (!$date_obj) {
+                $dateErr = "<div class=\"invalid-feedback\">El campo no cumple con el formato.</div>";
+                $dateClassErr = "is-invalid";
+            } else if (!mayorEdad($date_obj)) {
+                $dateErr = "<div class=\"invalid-feedback\">No eres mayor de edad.</div>";
+                $dateClassErr = "is-invalid";
+            } else $ok++;
+        }
+
+        if (empty($_POST["email"])) {
+            $emailErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+            $emailClassErr = "is-invalid";
+        } else {
+            $email = test_input($_POST["email"]);
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                $emailErr = "<div class=\"invalid-feedback\">El campo no cumple con el formato.</div>";
+                $emailClassErr = "is-invalid";
+            } else $ok++;
+        }
+    
+        if (empty($_POST["password"])) {
+            $passwordErr = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+            $passwordClassErr = "is-invalid";
+        } else {
+            if (strlen($_POST["password"]) < 8) {
+                $passwordErr = "<div class=\"invalid-feedback\">La Contraseña debe contener 8 caracteres mínimo.</div>";
+                $passwordClassErr = "is-invalid";
+            } else {
+                $regexpas = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{8,}$/';
+                if (!preg_match($regexpas, $_POST["password"])) {
+                    $passwordErr = "<div class=\"invalid-feedback\">La Contraseña debe contener al menos una mayúscula, una minúscula y un caracter especial.</div>";
+                    $passwordClassErr = "is-invalid";
+                } else{
+                    $ok++;
+                    $passwordCodificado = sha1(md5($password));
+                } 
+            }
+        }
+
+        if (empty($_POST["password2"])) {
+            $password2Err = "<div class=\"invalid-feedback\">El campo es obligatorio.</div>";
+            $passwordClassErr = "is-invalid";
+        } else {
+            if ($password2!==$password){
+                $password2Err = "<div class=\"invalid-feedback\">La contraseña no coincide.</div>";
+                $passwordClassErr = "is-invalid";
+            } else $ok++;
+        }
+
+        // si todos los inputs son ok:
+        if ($ok === 6){
+            // regenera el token de la session perpetua por defecto
+            session_regenerate_id();
+                
+            // almacenar usuario en la session (se deberia hacer mediante token)
+            session_start();
+            $_SESSION['login'] = 1;
+            $_SESSION['username'] = $user;
+            $_SESSION['password'] = $passwordCodificado;
+
+            // entrar en la parte privada
+            header('Location:index.php');
+        }
+        
+    
+    } 
+    
+ ?>
 <body> 
-<?php require "./modulos/headerLogin.php"; ?>
+    <?php include_once ("./modulos/headerLogin.php"); ?>
     <div class="d-flex align-items-center py-5 bg-body-tertiary">
         <main class="form-signin w-50 m-auto">
             <form method="POST" action="signUp.php" class="needs-validation row g-2" novalidate>
                 <h1 class="h3 mb-3 fw-normal">Sign Up:</h1>
                 <div class="form-floating">
-                    <input type="text" class="form-control is-invalid" id="floatingInput" name="user" placeholder="nombre" required>
+                    <input type="text" class="form-control <?=$userClassErr?>" id="floatingInput" name="user" placeholder="nombre" required value="Cris">
                     <label for="floatingInput">Nombre</label>
-                    <div class="invalid-feedback">El campo es obligatorio.</div>
+                    <?= $userErr?>
                 </div>
                 <div class="form-floating">
-                    <input type="text" class="form-control is-invalid" id="floatingInput" name="surname" placeholder="apellido" required>
+                    <input type="text" class="form-control <?=$surnameClassErr?>" id="floatingInput" name="surname" placeholder="apellido" required value="Hidalgo">
                     <label for="floatingInput">Apellido</label>
-                    <div class="invalid-feedback">El campo es obligatorio.</div>
+                    <?= $surnameErr?>
                 </div>
                 <div class="form-floating">
-                    <input type="date" class="form-control is-invalid" id="floatingInput" name="date" placeholder="date" required>
-                    <label for="floatingInput">Fecha de nacimiento</label>
-                    <?php 
-                    if(isset($_GET['fechaErr']) && $_GET['fechaErr']==1){
-                        echo "<div class=\"invalid-feedback\">La fecha no cumple con el formato correcto. </div>";
-                    } else if (isset($_GET['edadErr']) && $_GET['edadErr']==1) {
-                        echo "<div class=\"invalid-feedback\">La edad mínima son 18 años. </div>";
-                    }
-                    ?>
+                    <input type="text" class="form-control <?=$dateClassErr?>" id="floatingInput" name="date" placeholder="date" required value="dd/mm/yyyy">
+                    <label for="floatingInput">Fecha de nacimiento</label> 
+                    <?= $dateErr?>
                 </div>
                 <div class="form-floating">
-                    <input type="text" class="form-control is-invalid" id="floatingInput" name="email" placeholder="email" required>
+                    <input type="email" class="form-control <?=$emailClassErr?>" id="floatingInput" name="email" placeholder="email" required value="ejemplo@mail.com">
                     <label for="floatingInput">Email</label>
-                   <?php if(isset($_GET['mailErr']) && $_GET['mailErr']==1){
-                        echo "<div class=\"invalid-feedback\">El email no cumple con el formato correcto.</div>";
-                    }
-                    ?>
+                    <?= $emailErr?>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control is-invalid" id="floatingPassword" name="password" placeholder="Password" required>
+                    <input type="password" class="form-control <?=$passwordClassErr?>" id="floatingPassword" name="password" placeholder="Password" required value="Pass00??">
                     <label for="floatingPassword">Contraseña</label>
-                    <div class="invalid-feedback">El campo es obligatorio.</div>
+                    <?= $passwordErr?>
                 </div>
                 <div class="form-floating">
-                    <input type="password2" class="form-control is-invalid" id="floatingPassword" name="password2" placeholder="Password2" required>
+                    <input type="password" class="form-control <?=$passwordClassErr?>" id="floatingPassword" name="password2" placeholder="Password2" required value="Pass00??">
                     <label for="floatingPassword">Repetir contraseña</label>
-                    <?php if(isset($_GET['passwordErr']) && $_GET['passwordErr']==2){
-                        echo "<div class=\"invalid-feedback\">La contraseña no coincide.</div>";
-                    }
-                    ?>
+                    <?= $password2Err?>
                 </div>
                 <button class="btn btn-primary w-100 py-2 my-3" type="submit" name="send">Sign Up</button>
+                <a class="btn btn-danger w-100 py-2 my-3" href="login.php" >Log In</a>
             </form>
         </main>
     </div>
    
-    <?php require "./modulos/footer.php"; ?>
+    <?php include_once ("./modulos/footer.php"); ?>
     
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

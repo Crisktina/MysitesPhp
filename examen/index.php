@@ -4,13 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/ionicons@4.0.0/dist/css/ionicons.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Posts</title>
 </head>
 <?php 
+
+if (isset($_POST["logout"])) {
+  session_start();
+  $_SESSION["login"] = 0;
+  session_destroy();
+  header("Location:login.php");
+}
+
 session_start();
 
+if (!isset($_SESSION) || $_SESSION["login"] === 0){
+  header("Location:login.php");
+}
 
+$titleErr = $titleClassErr = $bodyErr = $bodyClassErr = "";
+
+if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
+  if(!empty($_POST["title"])) {
+    if (!is_string($_POST["title"]) || strlen($_POST["title"]) < 8){
+      $titleErr = "<div class=\"invalid-feedback\">El titulo debe contener letras y ser mayor de 8 caracteres.</div>";
+      $titleClassErr = "is-invalid";
+    } 
+    if (!is_string($_POST["body"]) || strlen($_POST["body"]) > 500){
+      $bodyErr = "<div class=\"invalid-feedback\">El texto debe contener letras y ser menor de 500 caracteres.</div>";
+      $bodyClassErr = "is-invalid";
+    } 
+  }
+}
 ?>
 <body> 
     <header>
@@ -19,7 +45,7 @@ session_start();
             <div class="py-4">
               <h4>Hola <?=$_SESSION['username']?>!</h4>
               <ul class="list-unstyled">
-                <li><a href="login.php" class="text-white">Log out</a></li>
+                <form method='POST'><input type="submit" class=" py-2" name="logout" value="Logout"></form>
               </ul>
             </div>
         </div>
@@ -37,18 +63,24 @@ session_start();
       </div>
     </header>
     <main class="container mt-5">
-        <form method="POST" class="my-5 row g-2">
+        <form method="POST" class="my-5 row g-2" enctype="multipart/form-data">
             <h1 class="h3 mb-4 fw-normal">Añadir post:</h1>
+            <input type="text" hidden name="user" value="<?=$_SESSION['username']?>">
+            <input type="text" hidden name="likes" value="<?=0?>">
+            <!--Hacer que se autoincremente +1 el id en cada submit-->
+            <input type="num" hidden name="id" value="<?=10?>"> 
             <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInput" name="titulo" placeholder="titulo">
+                <input type="text" class="form-control <?=$titleClassErr?>" id="floatingInput" name="title" placeholder="titulo">
                 <label for="floatingInput">Titulo</label>
+                <?= $titleErr?>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInput" name="textoPost" placeholder="textoPost">
+                <input type="text" class="form-control <?=$bodyClassErr?>" id="floatingInput" name="body" placeholder="textoPost">
                 <label for="floatingInput">Texto del post</label>
+                <?= $bodyErr?>
             </div>
             <div class="form-floating">
-                <input class="form-control" type="file" id="formFile">
+                <input class="form-control" type="file" id="formFile" name="img" accept="image/*">
             </div>
 
             <button class="btn btn-primary w-100 py-2 my-3" type="submit" name="send">Añadir</button>   
@@ -60,7 +92,9 @@ session_start();
                       <h3 class="mb-0">Featured post</h3>
                       <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
                       <p class="card-text mb-auto">Autor: <cite title="Source Title">Cristina</cite></p>
-
+                      <button type="button" class="btn mr-md-2 w-25 mb-md-0 mb-2 btn-outline-danger">
+                      2 <i class="ion-md-heart mr-1"></i> Likes
+                      </button>
                     </div>
                     <div class="col-auto d-none d-lg-block">
                       <img src="./img/img1.jpg" alt="imagen paisaje" class="bd-placeholder-img" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -81,8 +115,8 @@ session_start();
                       <h3 class="mb-0">Post title</h3>
                       <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
                       <p class="card-text mb-auto">Autor: <cite title="Source Title">Pablo</cite></p>
-                      <button type="button" class="btn mr-md-2 mb-md-0 mb-2 btn-outline-danger">
-                        <i class="ion-ios-heart mr-1"></i> 2 Poner corazon!!!!!https://preview.colorlib.com/theme/bb/bootstrap-buttons-12/
+                      <button type="button" class="btn mr-md-2 w-25 mb-md-0 mb-2 btn-outline-danger">
+                      2 <i class="ion-md-heart mr-1"></i> Likes
                       </button>
                     </div>
                     <div class="col-auto d-none d-lg-block">
@@ -100,7 +134,7 @@ session_start();
         </div>
     </main>
    
-    <?php require "./modulos/footer.php"; ?>
+    <?php include_once ("./modulos/footer.php"); ?>
     
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
