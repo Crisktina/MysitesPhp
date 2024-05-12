@@ -1,10 +1,10 @@
 <?php 
  //otras validaciones
  require "./php/comprovaciones.php";
- 
+
 $titleErr = $titleClassErr = $bodyErr = $bodyClassErr = $imgErr = $imgClassErr = "";
 
-if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
+if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["enviar"])){
   $img = "";
   if(!empty($_POST["title"]) && !empty($_POST["body"]) && is_uploaded_file($_FILES['img']['tmp_name'])) {
     $ok = 0;

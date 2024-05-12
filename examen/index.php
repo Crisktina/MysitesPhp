@@ -14,7 +14,8 @@ header('Content-Type: text/html; charset=UTF-8');
 session_start();
 
 if (isset($_POST['logout'])) {
-  $_SESSION['login'] = 0;
+  //$_SESSION['login'] = 0;
+  session_unset();
   session_destroy();
   header("Location:login.php");
 }
@@ -32,9 +33,13 @@ if (!isset($_SESSION['posts'])) {
 require "./php/newPost.php";
 
 // Añadir comentario
+require "./php/newComment.php";
 
+// Añadir Like
+require "./php/newLike.php";
 
 var_dump($_SESSION['posts']);
+echo "<br>";
 //session_destroy();
 //print_r($_SESSION['posts']);
 ?>
@@ -81,7 +86,7 @@ var_dump($_SESSION['posts']);
                 <?= $imgErr?>
             </div>
 
-            <button class="btn btn-primary w-100 py-2 my-3" type="submit" name="send">Añadir</button>   
+            <button class="btn btn-primary w-100 py-2 my-3" type="submit" name="enviar">Añadir</button>   
         </form>
         <div class="row mb-2">
             
@@ -95,9 +100,12 @@ var_dump($_SESSION['posts']);
                         <h3 class="mb-0"><?=$post['title']?></h3>
                         <p class="card-text mb-auto"><?=$post['body']?></p>
                         <p class="card-text mb-auto">Autor: <cite title="Source Title"><?=$post['author']?></cite></p>
-                        <button type="button" class="btn mr-md-2 w-25 mb-md-0 mb-2 btn-outline-danger">
+                        <form method="post">
+                        <input type="number" hidden name="postId" value="<?=$post['id']?>">
+                        <button type="submit" class="btn mr-md-2 w-25 mb-md-0 mb-2 btn-outline-danger" name="newLike">
                         <?=$post['likes']?> <i class="ion-md-heart mr-1"></i> Likes
                         </button>
+                        </form>
                       </div>
                       <div class="col-auto d-none d-lg-block">
                         <img src="<?=$post['img']?>" alt="imagen" class="bd-placeholder-img" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -112,10 +120,11 @@ var_dump($_SESSION['posts']);
                           <footer class="blockquote-footer fs-6 fst-italic"><?=$quote['author']?></footer>
                         </blockquote>
                         <?php }}?>
-                        <form class="row row-cols-lg-auto g-3 align-items-center " method="POST">
+                        <form class="row row-cols-lg-auto g-3 align-items-center" method="POST">
                           <div class="col-auto">
                             <label class="visually-hidden" for="inlineFormInputGroupUsername">Comentario</label>
                             <div class="input-group">
+                              <input type="number" hidden name="postId" value="<?=$post['id']?>">
                               <input type="text" class="form-control" id="inlineFormInputGroupUsername" name="newComment" placeholder="Añadir nuevo comentario">
                             </div>
                           </div>
