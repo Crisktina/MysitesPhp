@@ -38,8 +38,8 @@ require "./php/newComment.php";
 // Añadir Like
 require "./php/newLike.php";
 
-var_dump($_SESSION['posts']);
-echo "<br>";
+// var_dump($_SESSION['posts']);
+// echo "<br>";
 //session_destroy();
 //print_r($_SESSION['posts']);
 ?>

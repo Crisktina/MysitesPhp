@@ -40,6 +40,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["sendComent"])){
         $_SESSION['posts'][$postId]['comentarios'] = $comentarios;
      
       }
+      header("Location: index.php");
+    exit();
     }
 }
 ?>

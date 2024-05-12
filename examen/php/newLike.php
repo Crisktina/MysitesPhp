@@ -27,6 +27,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["newLike"])){
         $_SESSION['posts'][$postId]['likes'] = $like;
      
       }
+      header("Location: index.php");
+    exit();
 }
 
 ?>

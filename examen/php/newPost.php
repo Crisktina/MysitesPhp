@@ -72,6 +72,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["enviar"])){
       $imgClassErr = "is-invalid";
     }
   }
+  header("Location: index.php");
+    exit();
 }
 
 ?>
