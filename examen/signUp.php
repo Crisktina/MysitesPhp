@@ -92,17 +92,8 @@
 
         // si todos los inputs son ok:
         if ($ok === 6){
-            // regenera el token de la session perpetua por defecto
-            session_regenerate_id();
-                
-            // almacenar usuario en la session (se deberia hacer mediante token)
-            session_start();
-            $_SESSION['login'] = 1;
-            $_SESSION['username'] = $user;
-            $_SESSION['password'] = $passwordCodificado;
-
-            // entrar en la parte privada
-            header('Location:index.php');
+            //inicar sesión
+            require "./php/inicioSession.php";
         }
         
     

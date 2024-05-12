@@ -9,6 +9,9 @@
 </head>
 <?php 
 header('Content-Type: text/html; charset=UTF-8'); 
+ //otras validaciones
+ require "./php/comprovaciones.php";
+
 
 $passwordErr = $passwordClassErr = $userErr = $userClassErr = $rememberErr = $rememberClassErr = "";
 $user = $password = $passwordCodificado = "";
@@ -68,31 +71,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
     // password = 1234 user= Cris 
     // Validar credenciales:
     if($user == "Cris" && $passwordCodificado == "63982e54a7aeb0d89910475ba6dbd3ca6dd4e5a1" && isset($_POST['remember'])){
-
-        // regenera el token de la session perpetua por defecto
-        session_regenerate_id();
-            
-        // almacenar usuario en la session (se deberia hacer mediante token)
-        $_SESSION['login'] = 1;
-        $_SESSION['username'] = $user;
-        $_SESSION['password'] = $passwordCodificado;
-
-        // entrar en la parte privada
-        header('Location:index.php');
-
+        //inicar sesión
+        require "./php/inicioSession.php";
     }
     
 } 
 
-// Strip unnecessary characters (extra space, tab, newline) from the user input data (with the PHP trim() function)
-// Remove backslashes \ from the user input data (with the PHP stripslashes() function)
-// The htmlspecialchars() function converts special characters into HTML entities. This means that it will replace HTML characters like < and > with &lt; and &gt;. This prevents attackers from exploiting the code by injecting HTML or Javascript code (Cross-site Scripting attacks) in forms.
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
 ?>
 <body> 
     <?php include_once ("./modulos/headerLogin.php"); ?>

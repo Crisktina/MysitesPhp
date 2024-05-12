@@ -9,34 +9,34 @@
     <title>Posts</title>
 </head>
 <?php 
+header('Content-Type: text/html; charset=UTF-8'); 
 
-if (isset($_POST["logout"])) {
-  session_start();
-  $_SESSION["login"] = 0;
+session_start();
+
+if (isset($_POST['logout'])) {
+  $_SESSION['login'] = 0;
   session_destroy();
   header("Location:login.php");
 }
 
-session_start();
-
-if (!isset($_SESSION) || $_SESSION["login"] === 0){
+if (!isset($_SESSION) || $_SESSION['login'] === 0){
   header("Location:login.php");
 }
 
-$titleErr = $titleClassErr = $bodyErr = $bodyClassErr = "";
-
-if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
-  if(!empty($_POST["title"])) {
-    if (!is_string($_POST["title"]) || strlen($_POST["title"]) < 8){
-      $titleErr = "<div class=\"invalid-feedback\">El titulo debe contener letras y ser mayor de 8 caracteres.</div>";
-      $titleClassErr = "is-invalid";
-    } 
-    if (!is_string($_POST["body"]) || strlen($_POST["body"]) > 500){
-      $bodyErr = "<div class=\"invalid-feedback\">El texto debe contener letras y ser menor de 500 caracteres.</div>";
-      $bodyClassErr = "is-invalid";
-    } 
-  }
+// Verificar si existe un array de posts en la sesión, si no existe, crear uno
+if (!isset($_SESSION['posts'])) {
+  $_SESSION['posts'] = [];
 }
+
+// Añadir post
+require "./php/newPost.php";
+
+// Añadir comentario
+
+
+var_dump($_SESSION['posts']);
+//session_destroy();
+//print_r($_SESSION['posts']);
 ?>
 <body> 
     <header>
@@ -65,72 +65,73 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["send"])){
     <main class="container mt-5">
         <form method="POST" class="my-5 row g-2" enctype="multipart/form-data">
             <h1 class="h3 mb-4 fw-normal">Añadir post:</h1>
-            <input type="text" hidden name="user" value="<?=$_SESSION['username']?>">
-            <input type="text" hidden name="likes" value="<?=0?>">
-            <!--Hacer que se autoincremente +1 el id en cada submit-->
-            <input type="num" hidden name="id" value="<?=10?>"> 
             <div class="form-floating">
-                <input type="text" class="form-control <?=$titleClassErr?>" id="floatingInput" name="title" placeholder="titulo">
+                <input type="text" class="form-control <?=$titleClassErr?>" name="title" placeholder="titulo">
                 <label for="floatingInput">Titulo</label>
                 <?= $titleErr?>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control <?=$bodyClassErr?>" id="floatingInput" name="body" placeholder="textoPost">
+                <input type="text" class="form-control <?=$bodyClassErr?>" name="body" placeholder="textoPost">
                 <label for="floatingInput">Texto del post</label>
                 <?= $bodyErr?>
             </div>
             <div class="form-floating">
-                <input class="form-control" type="file" id="formFile" name="img" accept="image/*">
+              <!-- La imagen se guarda en la carpeta local -->
+                <input class="form-control <?=$imgClassErr?>" type="file" name="img" accept=".png, .jpg, .jpeg">
+                <?= $imgErr?>
             </div>
 
             <button class="btn btn-primary w-100 py-2 my-3" type="submit" name="send">Añadir</button>   
         </form>
         <div class="row mb-2">
-            <div class="col-md-6">
-                <div class="card row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                    <div class="col p-4 d-flex flex-column position-static">
-                      <h3 class="mb-0">Featured post</h3>
-                      <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                      <p class="card-text mb-auto">Autor: <cite title="Source Title">Cristina</cite></p>
-                      <button type="button" class="btn mr-md-2 w-25 mb-md-0 mb-2 btn-outline-danger">
-                      2 <i class="ion-md-heart mr-1"></i> Likes
-                      </button>
-                    </div>
-                    <div class="col-auto d-none d-lg-block">
-                      <img src="./img/img1.jpg" alt="imagen paisaje" class="bd-placeholder-img" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    </div>
-                    <div class="card-footer text-body-secondary">
-                      <p class="mb-2 fw-semibold">Comentarios:</p>
-                      <blockquote class="blockquote mb-0">
-                        <p class="fs-6">A well-known quote, contained in a blockquote element.</p>
-                        <footer class="blockquote-footer fs-6 fst-italic">Autor</footer>
-                      </blockquote>
-                    </div>
+            
+              <?php
+              // Mostrar los posts almacenados en la sesión
+              if(isset($_SESSION['posts'])) {
+                  foreach($_SESSION['posts'] as $post) { ?>
+                <div class="col-md-6">
+                  <div class="card row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                      <div class="col p-4 d-flex flex-column position-static">
+                        <h3 class="mb-0"><?=$post['title']?></h3>
+                        <p class="card-text mb-auto"><?=$post['body']?></p>
+                        <p class="card-text mb-auto">Autor: <cite title="Source Title"><?=$post['author']?></cite></p>
+                        <button type="button" class="btn mr-md-2 w-25 mb-md-0 mb-2 btn-outline-danger">
+                        <?=$post['likes']?> <i class="ion-md-heart mr-1"></i> Likes
+                        </button>
+                      </div>
+                      <div class="col-auto d-none d-lg-block">
+                        <img src="<?=$post['img']?>" alt="imagen" class="bd-placeholder-img" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
+                      </div>
+                      <div class="card-footer text-body-secondary">
+                        <p class="mb-2 fw-semibold">Comentarios: <strong><?=count($post['comentarios'])?></strong></p>
+                       <?php 
+                       if(count($post['comentarios'])!==0) {
+                        foreach($post['comentarios'] as $quote) { ?>
+                        <blockquote class="blockquote mb-3">
+                          <p class="fs-6"><?=$quote['quote']?></p>
+                          <footer class="blockquote-footer fs-6 fst-italic"><?=$quote['author']?></footer>
+                        </blockquote>
+                        <?php }}?>
+                        <form class="row row-cols-lg-auto g-3 align-items-center " method="POST">
+                          <div class="col-auto">
+                            <label class="visually-hidden" for="inlineFormInputGroupUsername">Comentario</label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" id="inlineFormInputGroupUsername" name="newComment" placeholder="Añadir nuevo comentario">
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <button type="submit" class="btn btn-primary" name="sendComent">Ok</button>
+                          </div>
+                        </form>
+                      </div>
+                  </div>
                 </div>
-                
-            </div>
-            <div class="col-md-6">
-                <div class="card row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                    <div class="col p-4 d-flex flex-column position-static">
-                      <h3 class="mb-0">Post title</h3>
-                      <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                      <p class="card-text mb-auto">Autor: <cite title="Source Title">Pablo</cite></p>
-                      <button type="button" class="btn mr-md-2 w-25 mb-md-0 mb-2 btn-outline-danger">
-                      2 <i class="ion-md-heart mr-1"></i> Likes
-                      </button>
-                    </div>
-                    <div class="col-auto d-none d-lg-block">
-                      <img src="./img/img2.jpg" alt="imagen paisaje" class="bd-placeholder-img" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    </div>
-                    <div class="card-footer text-body-secondary">
-                      <p class="mb-2 fw-semibold">Comentarios:</p>
-                      <blockquote class="blockquote mb-0">
-                        <p class="fs-6">A well-known quote, contained in a blockquote element.</p>
-                        <footer class="blockquote-footer fs-6 fst-italic">Autor</footer>
-                      </blockquote>
-                    </div>
-                </div>
-            </div>
+              <?php }
+              } else if (count($_SESSION['posts'])==0) {
+                echo "No hay posts creados.";
+                echo "<div class=\"invalid-feedback\">No hay posts creados.</div>";
+              } ?>  
+            
         </div>
     </main>
    

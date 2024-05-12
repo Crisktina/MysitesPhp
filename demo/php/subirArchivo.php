@@ -28,7 +28,7 @@ echo "<br>";
 echo "<br>";
 
 if(isset($_POST["enviar"])){
-    If (is_uploaded_file($_FILES['fileIMG']['tmp_name']))
+    if (is_uploaded_file($_FILES['fileIMG']['tmp_name']))
     {//si se ha subido el fichero….
         $nombreDirectorio= "../archivos/";
         $idUnico= time();
