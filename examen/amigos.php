@@ -47,7 +47,7 @@ if($_SESSION['username'] === "Cris"){
 } else if($_SESSION['username'] === "Otro"){
   $arrayUsuario =$_SESSION['amigos'][0][1];
 } else {
-  echo "No tienes amigos";
+  $arrayUsuario = [];
 }
 
 ?>
@@ -95,7 +95,8 @@ if($_SESSION['username'] === "Cris"){
           include_once ("./php/buscarAmigosApellido.php");
         }else {
               // Mostrar lista de amigos almacenados en la sesión
-              if(isset($arrayUsuario)) {
+              if($arrayUsuario!==[]){
+                if(isset($arrayUsuario)) {
                   foreach($arrayUsuario['friends'] as $amigo) { ?>
                 <div class="col-md-6">
                   <div class="card row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -109,10 +110,14 @@ if($_SESSION['username'] === "Cris"){
                   </div>
                 </div>
               <?php }
-              } else if (count($arrayUsuario['friends'])==0) {
+              } else if (count($arrayUsuario['friends'])===0) {
                 echo "No hay amigos creados.";
                 echo "<div class=\"invalid-feedback\">No hay amigos creados.</div>";
-              } }?> 
+              }
+              } else {
+                echo "No tienes amigos :(";
+              }
+               }?> 
         </div>
     </main>
     <?php include_once ("./modulos/footer.php"); ?>
