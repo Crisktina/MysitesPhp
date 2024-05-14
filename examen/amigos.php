@@ -32,13 +32,24 @@ if (!isset($_SESSION['amigos'])) {
 //Buscar amigos
 //require "./php/buscarAmigos.php";
 
-// var_dump($_SESSION['amigos']);
+//var_dump($_SESSION['amigos']);
+//var_dump($_SESSION['amigos'][0][0]['friends'][0]);
 // echo "<br>";
 // echo "<br>";
 // $array = $_SESSION['amigos'][0];
 // var_export($array);
 // echo "<br>";
 // echo "<br>";
+$arrayUsuario = [];
+
+if($_SESSION['username'] === "Cris"){
+  $arrayUsuario =$_SESSION['amigos'][0][0];
+} else if($_SESSION['username'] === "Otro"){
+  $arrayUsuario =$_SESSION['amigos'][0][1];
+} else {
+  echo "No tienes amigos";
+}
+
 ?>
 <body> 
     <header>
@@ -84,8 +95,8 @@ if (!isset($_SESSION['amigos'])) {
           include_once ("./php/buscarAmigosApellido.php");
         }else {
               // Mostrar lista de amigos almacenados en la sesión
-              if(isset($_SESSION['amigos'])) {
-                  foreach($_SESSION['amigos'][0] as $amigo) { ?>
+              if(isset($arrayUsuario)) {
+                  foreach($arrayUsuario['friends'] as $amigo) { ?>
                 <div class="col-md-6">
                   <div class="card row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                       <div class="col p-4 d-flex flex-column position-static">
@@ -98,7 +109,7 @@ if (!isset($_SESSION['amigos'])) {
                   </div>
                 </div>
               <?php }
-              } else if (count($_SESSION['amigos'][0])==0) {
+              } else if (count($arrayUsuario['friends'])==0) {
                 echo "No hay amigos creados.";
                 echo "<div class=\"invalid-feedback\">No hay amigos creados.</div>";
               } }?> 

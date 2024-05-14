@@ -1,13 +1,14 @@
 <?php
-if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["buscar"])){
     if(!empty($_POST["cognomBuscar"])) {
+      
         $valorApellidoBusqueda = strtolower(trim($_POST['cognomBuscar']));
         ?>
         <div class="row mb-2">
               <?php
               // Mostrar lista de amigos almacenados en la sesión
-              if(isset($_SESSION['amigos'])) {
-                foreach($_SESSION['amigos'][0] as $amigo) { 
+              $arrayUsuarioPrincipal = $_SESSION['amigos'][0][0];
+              if(isset($arrayUsuario)) {
+                foreach($arrayUsuario['friends'] as $amigo) { 
                     if (str_contains(strtolower($amigo['cognom']), $valorApellidoBusqueda)===true) {
                         $amigosCoincidentes[] = $amigo;
                      }}
@@ -29,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["buscar"])){
                     else {
                       echo "No hay coincidencias.";
                     }
-              } else if (count($_SESSION['amigos'][0])==0) {
+              } else if (count($arrayUsuario['friends']) ==0) {
                 echo "No hay amigos creados.";
                 echo "<div class=\"invalid-feedback\">No hay amigos creados.</div>";
               } ?> 
@@ -37,8 +38,5 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["buscar"])){
         
 <?php
     }
-    //header("Location: amigos.php");
-    exit();
-}
 
 ?>
