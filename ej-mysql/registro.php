@@ -14,16 +14,15 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
     //consulta de datos
     include_once "conexion.php";
     $consulta = "INSERT INTO user (username, password) VALUES ('$user','$contraseña');";
-    echo $consulta;
-    echo "ok";
+    //echo $consulta;
+
     //Acceso si o no...
     if(isset($consulta)){
     
         $result = mysqli_query ($conexion, $consulta) or die ("Fallo en la consulta");
         //print_r($result);
-        //echo $result->num_rows;
-        if($result->num_rows==1){
-            echo "incio de sessión";
+        if($result==1){
+             echo "incio de sessión";
             header('Location: index.php');
         }
 
@@ -36,7 +35,7 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 ?>
 <body>
     <h1>Registro</h1>
-    <form action="POST">
+    <form method="POST">
         <label for="user">Usuario:</label>
         <input type="text" name="user" id="user">
         <label for="pass">Password:</label>
