@@ -30,13 +30,18 @@ if($conexion){
 
 ?>
 <body>
-    <div class="containerLogin">
-        <form class="formLogin" method="post">
-            <h2>Login</h2>
-        <input type="text" placeholder="Nombre de usuario">
-        <input type="text" placeholder="Password"> <button class="button btnForm" type="submit">Enviar</button>
-        </form>
-    </div>
+<div class="containerLogin">
+    <form class="formLogin" method="post">
+        <h2>Registro</h2>
+      <input type="text" placeholder="Nombre de usuario">
+      <input type="text" placeholder="Nickname">
+      <input type="date" placeholder="Año de nacimiento">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password"> 
+      <input type="password" placeholder="Confirmar password"> 
+      <button class="button btnForm" type="submit">Enviar</button>
+    </form>
+</div>
     
 </body>
 </html>

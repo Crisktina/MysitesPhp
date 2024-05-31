@@ -89,6 +89,7 @@ input {
   padding: 5px;
   border: 2px solid var(--azul);
   border-radius: 7px;
+  width: 100%;
 }
 input:hover {
   box-shadow: 0 0 4px var(--turquesa);
@@ -116,8 +117,8 @@ div.header div {
 div.navbar {
   grid-area: nav;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  flex-direction: row;
+  align-items: flex-start;
   flex-wrap: nowrap;
   gap: 10px;
 }
@@ -198,6 +199,10 @@ img.iconUser {
   width: 15px;
 }
 
+.inputSuscriptores {
+  width: 75%;
+}
+
 /* --------------------footer------------------ */
 div.footer {
   grid-area: footer;
@@ -206,6 +211,37 @@ div.footer {
 div.footer p {
   margin-top: 10px;
   color: var(--azulDark);
+}
+
+/* --------------------login------------------ */
+div.containerLogin {
+  background: linear-gradient(
+    90deg,
+    rgb(10, 224, 217) 0%,
+    rgba(0, 174, 255, 1) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+form.formLogin {
+  background-color: var(--white);
+  padding: 100px 100px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+form.formLogin h2 {
+  margin-bottom: 20px;
+}
+
+form.formLogin button.btnForm {
+  width: 100%;
+  margin: 0;
 }
 
 /* --------------------mediaqueries------------------ */

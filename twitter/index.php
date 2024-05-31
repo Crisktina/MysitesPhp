@@ -34,7 +34,7 @@ if($conexion){
   <div class="header">
     <div>
       <a href="index.php"><img class="logo" src="./img/twitter.png" alt="logo"></a>
-      <button type="button" class="button" href="login.php">Log out</button>
+      <a href="login.php"><button type="button" class="button">Log out</button></a>
     </div>
     <div class="line"></div>
   </div>
@@ -55,7 +55,7 @@ if($conexion){
   </div>
   <div class="side-bar">
     <div>
-      <input type="text" placeholder="Buscar amigos..."> <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
+      <input class="inputSuscriptores" type="text" placeholder="Buscar amigos..."> <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
     </div>
     <div>
       <div class="cardUser">
