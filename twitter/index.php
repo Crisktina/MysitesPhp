@@ -13,17 +13,18 @@
 require_once "./data/conexion_ddbb.php";
 
 if($conexion){
-    //consulta de datos
-    $consulta = "SELECT * FROM mensajes";
+    //consulta de mensajes + nombre usuario
+    $consulta = "SELECT m.id AS id_mensaje, m.fecha_ingreso, m.texto_mensaje, m.id_user, u.nombre  FROM mensajes m JOIN users u ON m.id_user = u.id;";
     $result = $conexion -> query($consulta);
+
     //print_r($result);
 
-    $arr = [];
-    // Array asociativo
+    // Array mensajes
+    $arrMensajes = [];
     while ($fila = $result -> fetch_array(MYSQLI_ASSOC)) {
-    $arr[]=$fila;
+    $arrMensajes[]=$fila;
     }
-    //print_r( $arr);
+    //print_r( $arrMensajes);
 
     require_once "./data/close_conexion_ddbb.php";
 }
@@ -47,22 +48,58 @@ if($conexion){
     </div>
   </div>
   <div class="content">
+    <?php foreach ($arrMensajes as $key => $value) { ?>
     <div class="cardMessage">
-      <div class="cabeceraCard"><img class="icon" src="./img/envelope.svg" alt="mensaje">
-      <h3>User123</h3></div>
-      <p><strong class="comillas">" </strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<strong class="comillas"> "</strong></p>
+      <div class="cabeceraCard">
+        <div>
+          <img class="icon" src="./img/envelope.svg" alt="mensaje">
+          <h3><?=$value['nombre'];?></h3>
+        </div> 
+        <h4><?=$value['fecha_ingreso'];?></h4></div>
+        <p><strong class="comillas">" </strong><?=$value['texto_mensaje'];?><strong class="comillas"> "</strong></p>
     </div>
+    <?php } ?>
   </div>
-  <div class="side-bar">
-    <div>
-      <input class="inputSuscriptores" type="text" placeholder="Buscar amigos..."> <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
-    </div>
-    <div>
-      <div class="cardUser">
-        <div class="boxIconUser"><img class="iconUser" src="./img/user.svg" alt="mensaje">
-        </div>
-        <h3 id="userName">User123</h3>
-      </div>
+  <div class="side-bar tabs">
+        <div class="tab-container">
+          <div id="tab2" class="tab">
+            <a href="#tab2">Usuarios</a>
+            <div class="tab-content">
+              <div class="buscarUser">
+                <form id="formSuscriptores" method="post">
+                  <input class="inputSuscriptores" type="text" placeholder="Buscar amigos...">
+                  <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
+                </form>
+              </div>
+              <div>
+                <div class="cardUser">
+                  <div class="boxIconUser">
+                    <img class="iconUser" src="./img/user.svg" alt="mensaje">
+                  </div>
+                  <h3 id="userName">User2</h3>
+                </div>
+              </div>
+            </div>
+          </div> 
+          <div id="tab1" class="tab">
+            <a href="#tab1">Amigos</a>
+            <div class="tab-content">
+              <div class="buscarUser">
+                <form id="formSuscriptores" method="post">
+                  <input class="inputSuscriptores" type="text" placeholder="Buscar amigos...">
+                  <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
+                </form>
+              </div>
+            <div>
+            <div class="cardUser">
+              <div class="boxIconUser">
+                <img class="iconUser" src="./img/user.svg" alt="mensaje">
+              </div>
+              <h3 id="userName">User1</h3>
+            </div>
+          </div>
+        </div> 
+  </div> 
     </div>
   </div>
   <div class="footer">

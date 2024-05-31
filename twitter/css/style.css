@@ -4,6 +4,12 @@
   --azulDark: rgb(0, 74, 109);
   --white: #ffffff;
   --shadow: #eee;
+  /* parámetros para configurar las pestañas */
+  --tabs-border-size: 3px;
+  --tabs-dark-color: rgba(12, 251, 243, 0.5);
+  --tabs-lite-color: rgb(215, 255, 254);
+  --tabs-width: 120px;
+  --tabs-height: 40px;
 }
 
 * {
@@ -40,6 +46,10 @@ div.container {
 
 h3 {
   font-size: 16px;
+}
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .button {
@@ -136,6 +146,9 @@ div.navbar div input {
 /* --------------------content------------------ */
 div.content {
   grid-area: content;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 div.cardMessage {
   background: linear-gradient(
@@ -149,6 +162,11 @@ div.cardMessage {
 }
 div.cabeceraCard {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+div.cabeceraCard div {
+  display: flex;
   align-items: center;
   flex-direction: row;
   gap: 10px;
@@ -157,6 +175,11 @@ div.cabeceraCard {
 div.cabeceraCard h3 {
   font-style: italic;
   font-size: 15px;
+}
+div.cabeceraCard h4 {
+  font-style: italic;
+  font-size: 12px;
+  color: var(--azulDark);
 }
 strong.comillas {
   padding: 0;
@@ -174,12 +197,84 @@ div.cardMessage p {
 /* --------------------sidebar------------------ */
 div.side-bar {
   grid-area: side;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: rgb(12 251 243 / 10%);
-  padding: 10px 10px 0;
+  background-color: var(--tabs-lite-color);
   border-radius: 8px;
+}
+/* sistema de pestañas */
+.tab-content {
+  display: none;
+}
+
+.tab:target .tab-content,
+.tab:last-of-type .tab-content {
+  display: block;
+}
+
+.tab:target ~ .tab:last-of-type .tab-content {
+  display: none;
+}
+
+/* aspecto básico */
+
+h2,
+p {
+  margin: 0;
+}
+
+.tabs * {
+  box-sizing: border-box;
+  font-size: 12px;
+}
+/* esto es para posicionar las pestañas correctamente */
+.tab-container {
+  position: relative;
+  padding-top: var(--tabs-height); /* en esta zona colocaremos las pestañas */
+}
+#tab1 > a {
+  --tabs-position: 0;
+}
+#tab2 > a {
+  --tabs-position: 1;
+}
+
+.tab > a {
+  text-align: center;
+  position: absolute;
+  width: calc(var(--tabs-width));
+  height: calc(var(--tabs-height) + var(--tabs-border-size));
+  top: 0;
+  left: calc(
+    var(--tabs-width) * var(--tabs-position)
+  ); /* posición de cada pestaña */
+}
+/* más aspecto */
+
+.tab-content {
+  background-color: var(--tabs-lite-color);
+  padding: 10px;
+  border-radius: 0 0 10px 10px;
+  position: relative;
+  z-index: 100;
+}
+.tab > a {
+  background-color: var(--tabs-dark-color);
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 0;
+}
+.tab:target > a,
+.tab:last-of-type > a {
+  background-color: var(--tabs-lite-color);
+  z-index: 200;
+}
+.tab:target ~ .tab:last-of-type > a {
+  background-color: var(--tabs-dark-color);
+  z-index: 0;
+}
+/* Fin estilos pestañas */
+div.buscarUser form {
+  display: flex;
+  flex-direction: row;
 }
 div.cardUser {
   display: flex;
@@ -188,17 +283,14 @@ div.cardUser {
   align-items: center;
   color: var(--azulDark);
 }
-
 div.boxIconUser {
   background-color: var(--azulDark);
   padding: 5px 7px 1px;
   border-radius: 7px;
 }
-
 img.iconUser {
   width: 15px;
 }
-
 .inputSuscriptores {
   width: 75%;
 }
@@ -233,6 +325,7 @@ form.formLogin {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  width: 45%;
 }
 
 form.formLogin h2 {
