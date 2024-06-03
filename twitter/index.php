@@ -26,6 +26,21 @@ if($conexion){
     }
     //print_r( $arrMensajes);
 
+    //consulta amigos
+    $consulta2 = "SELECT u.id AS id_user, u.nickname, s.id_suscriptor FROM users u JOIN suscriptores_users s ON u.id = s.id_user;";
+    $result2 = $conexion -> query($consulta2);
+
+    //print_r($result);
+
+    // Array suscritos
+    $arrUsers = [];
+    while ($fila2 = $result2 -> fetch_array(MYSQLI_ASSOC)) {
+    $arrUsers[]=$fila2;
+    }
+
+    //print_r($arrUsers);
+
+
     require_once "./data/close_conexion_ddbb.php";
 }
 
@@ -41,7 +56,7 @@ if($conexion){
   </div>
   <div class="navbar">
     <div>
-      <input type="text" placeholder="Enviar mensaje..."> <button class="button" type="submit"><img src="./img/envelopeWhite.svg" alt="buscar"></button>
+      <input type="text" placeholder="Crear nuevo mensaje..."> <button class="button" type="submit"><img src="./img/envelopeWhite.svg" alt="buscar"></button>
     </div>
     <div>
       <input type="text" placeholder="Buscar mensajes..."> <button class="button" type="submit"><img src="./img/search.svg" alt="buscar"></button>
@@ -71,14 +86,14 @@ if($conexion){
                   <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
                 </form>
               </div>
-              <div>
-                <div class="cardUser">
-                  <div class="boxIconUser">
-                    <img class="iconUser" src="./img/user.svg" alt="mensaje">
+              <?php foreach ($arrUsers as $key => $value) { ?>
+                  <div class="cardUser">
+                    <div class="boxIconUser">
+                      <img class="iconUser" src="./img/user.svg" alt="mensaje">
+                    </div>
+                    <h3 id="userName"><?=$value['nickname'];?></h3>
                   </div>
-                  <h3 id="userName">User2</h3>
-                </div>
-              </div>
+              <?php } ?>
             </div>
           </div> 
           <div id="tab1" class="tab">
@@ -90,17 +105,17 @@ if($conexion){
                   <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
                 </form>
               </div>
-            <div>
-            <div class="cardUser">
-              <div class="boxIconUser">
-                <img class="iconUser" src="./img/user.svg" alt="mensaje">
-              </div>
-              <h3 id="userName">User1</h3>
-            </div>
-          </div>
-        </div> 
-  </div> 
-    </div>
+              <?php foreach ($arrUsers as $key => $value) { ?>
+                <div class="cardUser">
+                  <div class="boxIconUser">
+                    <img class="iconUser" src="./img/user.svg" alt="mensaje">
+                  </div>
+                  <h3 id="userName"><?=$value['nickname'];?></h3>
+                </div>
+              <?php } ?>
+            </div> 
+          </div> 
+        </div>
   </div>
   <div class="footer">
     <div class="line"></div>

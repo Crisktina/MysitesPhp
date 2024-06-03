@@ -10,21 +10,29 @@
     <title>Twitter</title>
 </head>
 <?php 
-require_once "./data/conexion_ddbb.php";
-
-if($conexion){
+//recoger datos del post
+if(isset($_POST['user']) && isset($_POST['pass'])){
+    require_once "./data/conexion_ddbb.php";
+    $user = $_POST['user'];
+    //TODO: HACER CODIFICACIÓN INVERSA DE PASSWORD
+    $password = $_POST['pass']; 
     //consulta de datos
-    $consulta = "SELECT * FROM mensajes";
-    $result = $conexion -> query($consulta);
-    //print_r($result);
-
-    $arr = [];
-    // Array asociativo
-    while ($fila = $result -> fetch_array(MYSQLI_ASSOC)) {
-    $arr[]=$fila;
+    $consulta = "SELECT * FROM users WHERE nickname='$user' AND pwd='$password'";
+    //echo $consulta;
+    //Acceso si o no...
+    if(isset($consulta)){
+        
+        $result = mysqli_query ($conexion, $consulta) or die ("Fallo en la consulta");
+        //echo $result->num_rows;
+        if($result->num_rows==1){
+            echo "incio de sessión";
+            header('Location: index.php');
+        }
+        
+    } else {
+        header('Location: login.php');
+        echo "Usuario y password incorrectos";
     }
-    //print_r( $arr);
-
     require_once "./data/close_conexion_ddbb.php";
 }
 
@@ -32,9 +40,12 @@ if($conexion){
 <body>
     <div class="containerLogin">
         <form class="formLogin" method="post">
+            <img class="logo" src="./img/twitter.png" alt="logo">
             <h2>Login</h2>
-        <input type="text" placeholder="Nombre de usuario">
-        <input type="text" placeholder="Password"> <button class="button btnForm" type="submit">Enviar</button>
+            <input type="text" placeholder="Nickname" name="user">
+            <input type="password" placeholder="Password" name="pass"> 
+            <button class="button btnForm" type="submit">Enviar</button>
+            <p>¿Todavia no tienes usuario? <a class="linkLogin" href="register.php">¡Registra-te!</a></p>
         </form>
     </div>
     

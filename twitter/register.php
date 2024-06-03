@@ -10,36 +10,54 @@
     <title>Twitter</title>
 </head>
 <?php 
-require_once "./data/conexion_ddbb.php";
 
-if($conexion){
-    //consulta de datos
-    $consulta = "SELECT * FROM mensajes";
-    $result = $conexion -> query($consulta);
-    //print_r($result);
+//recoger datos del post
+if(isset($_POST['name']) && isset($_POST['nickname']) && isset($_POST['fechaNacimiento']) && isset($_POST['email']) && isset($_POST['pass']) && isset($_POST['passConfirm'])){
+    $name = $_POST['name'];
+    $nickname = $_POST['nickname'];
+    $fechaNacimiento = $_POST['fechaNacimiento']; 
+    $email = $_POST['email']; 
+    $pwd = $_POST['pass']; 
+    $pwdConfirm = $_POST['passConfirm']; 
+    $salt = rand(0,99999);
 
-    $arr = [];
-    // Array asociativo
-    while ($fila = $result -> fetch_array(MYSQLI_ASSOC)) {
-    $arr[]=$fila;
+    //insertar datos
+    require_once "./data/conexion_ddbb.php";
+    $consulta = "INSERT INTO users (nombre, nickname, mail, fecha_nacimiento, pwd, salt) VALUES ('$name', '$nickname', '$email','$fechaNacimiento','$pwd','$salt');";
+    //echo $consulta;
+
+    //Acceso si o no...
+    if(isset($consulta)){
+    
+        $result = mysqli_query ($conexion, $consulta) or die ("Fallo en la consulta");
+        //print_r($result);
+        if($result==1){
+             echo "incio de sessión";
+            header('Location: index.php');
+        }
+
+    } else {
+    header('Location: registro.php');
+    echo "No te has registrado con exito";
     }
-    //print_r( $arr);
-
     require_once "./data/close_conexion_ddbb.php";
 }
+    
 
 ?>
 <body>
 <div class="containerLogin">
     <form class="formLogin" method="post">
-        <h2>Registro</h2>
-      <input type="text" placeholder="Nombre de usuario">
-      <input type="text" placeholder="Nickname">
-      <input type="date" placeholder="Año de nacimiento">
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Password"> 
-      <input type="password" placeholder="Confirmar password"> 
+      <img class="logo" src="./img/twitter.png" alt="logo">
+      <h2>Registro</h2>
+      <input type="text" placeholder="Nombre de usuario" name="name">
+      <input type="text" placeholder="Nickname" name="nickname">
+      <input type="date" placeholder="Año de nacimiento" name="fechaNacimiento">
+      <input type="email" placeholder="Email" name="email">
+      <input type="password" placeholder="Password" name="pass"> 
+      <input type="password" placeholder="Confirmar password" name="passConfirm"> 
       <button class="button btnForm" type="submit">Enviar</button>
+      <p>¿Ya tienes usuario? <a class="linkLogin" href="login.php">¡Hacer Login!</a></p>
     </form>
 </div>
     

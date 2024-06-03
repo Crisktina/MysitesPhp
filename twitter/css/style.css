@@ -8,7 +8,7 @@
   --tabs-border-size: 3px;
   --tabs-dark-color: rgba(12, 251, 243, 0.5);
   --tabs-lite-color: rgb(215, 255, 254);
-  --tabs-width: 120px;
+  --tabs-width: 110px;
   --tabs-height: 40px;
 }
 
@@ -279,9 +279,10 @@ div.buscarUser form {
 div.cardUser {
   display: flex;
   flex-direction: row;
-  gap: 10px;
   align-items: center;
   color: var(--azulDark);
+  gap: 10px;
+  margin-top: 10px;
 }
 div.boxIconUser {
   background-color: var(--azulDark);
@@ -335,6 +336,15 @@ form.formLogin h2 {
 form.formLogin button.btnForm {
   width: 100%;
   margin: 0;
+}
+
+.linkLogin {
+  font-weight: 700;
+  color: var(--azul);
+}
+.linkLogin:hover {
+  font-weight: 900;
+  color: var(--turquesa);
 }
 
 /* --------------------mediaqueries------------------ */
