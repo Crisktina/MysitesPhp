@@ -10,35 +10,41 @@
     <title>Twitter</title>
 </head>
 <?php 
+
 require_once "./data/conexion_ddbb.php";
 
 if($conexion){
     //consulta de mensajes + nombre usuario
     $consulta = "SELECT m.id AS id_mensaje, m.fecha_ingreso, m.texto_mensaje, m.id_user, u.nombre  FROM mensajes m JOIN users u ON m.id_user = u.id;";
     $result = $conexion -> query($consulta);
-
-    //print_r($result);
-
     // Array mensajes
     $arrMensajes = [];
     while ($fila = $result -> fetch_array(MYSQLI_ASSOC)) {
     $arrMensajes[]=$fila;
     }
     //print_r( $arrMensajes);
+ 
 
-    //consulta amigos
+    //consulta usuarios
     $consulta2 = "SELECT u.id AS id_user, u.nickname, s.id_suscriptor FROM users u JOIN suscriptores_users s ON u.id = s.id_user;";
     $result2 = $conexion -> query($consulta2);
-
-    //print_r($result);
-
-    // Array suscritos
+    // Array usuarios
     $arrUsers = [];
-    while ($fila2 = $result2 -> fetch_array(MYSQLI_ASSOC)) {
-    $arrUsers[]=$fila2;
+    while ($fila2 = $result2 -> fetch_array(MYSQLI_ASSOC)) {$arrUsers[]=$fila2;}
+
+    //consulta amigos
+    $currentUserID = $_SESSION['user_id'];
+    var_dump($currentUserID);
+    $consulta3 = "SELECT u.id AS id_user, u.nickname, s.id_suscriptor FROM users u JOIN suscriptores_users s ON u.id = s.id_user AND u.id=$currentUserID;";
+    $result3 = $conexion -> query($consulta3);
+
+    // Array usuarios
+    $arrUsersAmigos = [];
+    while ($fila3 = $result3 -> fetch_array(MYSQLI_ASSOC)) {
+    $arrUsersAmigos[]=$fila3;
     }
 
-    //print_r($arrUsers);
+    //print_r($arrUsersAmigos);
 
 
     require_once "./data/close_conexion_ddbb.php";
@@ -105,7 +111,7 @@ if($conexion){
                   <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
                 </form>
               </div>
-              <?php foreach ($arrUsers as $key => $value) { ?>
+              <?php foreach ($arrUsersAmigos as $key => $value) { ?>
                 <div class="cardUser">
                   <div class="boxIconUser">
                     <img class="iconUser" src="./img/user.svg" alt="mensaje">
