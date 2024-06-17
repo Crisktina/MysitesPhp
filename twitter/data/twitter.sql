@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-06-2024 a las 12:14:04
+-- Tiempo de generación: 17-06-2024 a las 13:23:39
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -86,7 +86,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `nombre`, `nickname`, `mail`, `fecha_nacimiento`, `pwd`, `salt`, `fecha_ingreso`) VALUES
 (1, 'Cristina Hidalgo López', 'CrisH', 'cris@gmail.com', '1987-06-13', '12345', 12345, '2024-05-28'),
-(2, 'Amigo', 'Amigo', 'amigo@gmail.com', '1994-05-10', '12345', 12345, '2024-05-28');
+(2, 'Amigo', 'Amigo', 'amigo@gmail.com', '1994-05-10', '12345', 12345, '2024-05-28'),
+(3, 'Marta García', 'MG', 'mail@mail.com', '2024-06-21', '12345', 50496, '2024-06-03'),
+(4, 'Marta García', 'MG', 'mail@mail.com', '2024-05-27', '63982e54a7aeb0d89910475ba6dbd3ca6dd4e5a1', 90888, '2024-06-04');
 
 --
 -- Índices para tablas volcadas
@@ -120,7 +122,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
