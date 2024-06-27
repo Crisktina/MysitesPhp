@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,600,0,0" />
     <title>Maps</title>
 </head>
 <?php 
@@ -14,37 +16,16 @@
 require_once "./data/conexion_ddbb.php";
 
 if($conexion){
-    //consulta de mensajes + nombre usuario
-    $consulta = "SELECT m.id AS id_mensaje, m.fecha_ingreso, m.texto_mensaje, m.id_user, u.nombre  FROM mensajes m JOIN users u ON m.id_user = u.id;";
-    $result = $conexion -> query($consulta);
-    // Array mensajes
-    $arrMensajes = [];
-    while ($fila = $result -> fetch_array(MYSQLI_ASSOC)) {
-    $arrMensajes[]=$fila;
-    }
-    //print_r( $arrMensajes);
- 
+
 
     //consulta usuarios
-    $consulta2 = "SELECT u.id AS id_user, u.nickname, s.id_suscriptor FROM users u JOIN suscriptores_users s ON u.id = s.id_user;";
-    $result2 = $conexion -> query($consulta2);
+    $consulta = "SELECT u.id AS id_user, u.nickname FROM users u";
+    $result = $conexion -> query($consulta);
     // Array usuarios
     $arrUsers = [];
-    while ($fila2 = $result2 -> fetch_array(MYSQLI_ASSOC)) {$arrUsers[]=$fila2;}
+    while ($fila = $result -> fetch_array(MYSQLI_ASSOC)) {$arrUsers[]=$fila;}
 
-    //consulta amigos
-    $currentUserID = $_SESSION['user_id'];
-    var_dump($currentUserID);
-    $consulta3 = "SELECT u.id AS id_user, u.nickname, s.id_suscriptor FROM users u JOIN suscriptores_users s ON u.id = s.id_user AND u.id=$currentUserID;";
-    $result3 = $conexion -> query($consulta3);
-
-    // Array usuarios
-    $arrUsersAmigos = [];
-    while ($fila3 = $result3 -> fetch_array(MYSQLI_ASSOC)) {
-    $arrUsersAmigos[]=$fila3;
-    }
-
-    //print_r($arrUsersAmigos);
+   
 
 
     require_once "./data/close_conexion_ddbb.php";
@@ -56,30 +37,40 @@ if($conexion){
   <div class="header">
     <div>
       <a href="index.php"><img class="logo" src="./img/twitter.png" alt="logo"></a>
-      <a href="login.php"><button type="button" class="button">Log out</button></a>
+      <a href="login.php">
+        <button type="button" class="button">
+          <span class="material-symbols-rounded" style="color: white; font-size:18px;">logout</span>
+        </button>
+      </a>
     </div>
     <div class="line"></div>
   </div>
   <div class="navbar">
     <div>
-      <input type="text" placeholder="Crear nuevo mensaje..."> <button class="button" type="submit"><img src="./img/envelopeWhite.svg" alt="buscar"></button>
+      <input type="text" placeholder="Buscar imagenes..."> <button class="button" type="submit"><img src="./img/search.svg" alt="buscar"></button>
+
+      <form
+      id="altaProducte"
+      action="./functions/subirFoto.php"
+      method="POST"
+      enctype="multipart/form-data" >
+      <label>Añadir imagenes:
+      <input type="file" name="fileIMG" id="subirImagen" ></label>
+      <input class="button" type="submit" name="enviar" value="enviar"  />
+    </form>
     </div>
-    <div>
-      <input type="text" placeholder="Buscar mensajes..."> <button class="button" type="submit"><img src="./img/search.svg" alt="buscar"></button>
-    </div>
+    
   </div>
   <div class="content">
-    <?php foreach ($arrMensajes as $key => $value) { ?>
-    <div class="cardMessage">
-      <div class="cabeceraCard">
-        <div>
-          <img class="icon" src="./img/envelope.svg" alt="mensaje">
-          <h3><?=$value['nombre'];?></h3>
-        </div> 
-        <h4><?=$value['fecha_ingreso'];?></h4></div>
-        <p><strong class="comillas">" </strong><?=$value['texto_mensaje'];?><strong class="comillas"> "</strong></p>
-    </div>
-    <?php } ?>
+      <div class="imgCard">
+        <img src=".\photos\beverage-book-near-fireplace.jpg" alt="gallery image">
+      </div>
+      <div class="imgCard">
+        <img src=".\photos\beverage-book-near-fireplace.jpg" alt="gallery image">
+      </div>
+      <div class="imgCard">
+        <img src=".\photos\beverage-book-near-fireplace.jpg" alt="gallery image">
+      </div>
   </div>
   <div class="side-bar tabs">
         <div class="tab-container">
@@ -103,22 +94,14 @@ if($conexion){
             </div>
           </div> 
           <div id="tab1" class="tab">
-            <a href="#tab1">Amigos</a>
+            <a href="#tab1">Datos imagen</a>
             <div class="tab-content">
-              <div class="buscarUser">
-                <form id="formSuscriptores" method="post">
-                  <input class="inputSuscriptores" type="text" placeholder="Buscar amigos...">
-                  <button class="button" type="submit"><img  src="./img/search.svg" alt="buscar"></button>
-                </form>
-              </div>
-              <?php foreach ($arrUsersAmigos as $key => $value) { ?>
                 <div class="cardUser">
-                  <div class="boxIconUser">
-                    <img class="iconUser" src="./img/user.svg" alt="mensaje">
-                  </div>
-                  <h3 id="userName"><?=$value['nickname'];?></h3>
+                  <h3 id="userName">nombre imagen</h3>
                 </div>
-              <?php } ?>
+                <div class="cardUser">
+                  <h3 id="userName">nombre imagen</h3>
+                </div>
             </div> 
           </div> 
         </div>
