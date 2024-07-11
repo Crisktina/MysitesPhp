@@ -1,4 +1,5 @@
 <?php 
+require_once '../model/user.php';
 
 class UserContr extends User{
     private $username;
@@ -6,7 +7,7 @@ class UserContr extends User{
     private $repeatPwd;
     private $email;
 
-    public function __construct($username, $password, $repeatPwd, $email){
+    public function __construct($username = '', $password = '', $repeatPwd = '', $email = ''){
         $this->username = $username;
         $this->password = $password;
         $this->repeatPwd = $repeatPwd;
@@ -112,6 +113,11 @@ class UserContr extends User{
             $result = false;
         }
         return $result;
+    }
+
+    public function showUsersList(){
+        $res =  $this->showUsers($this->username, $this->email);
+        return $res;
     }
 
 }

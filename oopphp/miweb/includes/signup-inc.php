@@ -17,6 +17,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["send"])){
     $signup->signupUser();
 
     //Volver a la pagina inicial
-    header("Location: ../view/signup.html?error=none");
+    header("Location: ../view/userslist.html");
 
 }
